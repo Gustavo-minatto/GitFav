@@ -1,10 +1,10 @@
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-:root{
+:root {
   font-size: 62.5%;
 
   --thcolor: #092D38;
@@ -12,26 +12,26 @@
   --trcolorTwo-: hsla(191, 31%, 42%, 1);
   --TextColor-: #fff;
   --btnColor: #065E7C;
-  --btnRemoverColor: #F75A68;  
+  --btnRemoverColor: #F75A68;
 }
 
-body{
+body {
   background-color: black;
 }
 
-body *{
+body * {
   font-family: 'Roboto', sans-serif;
   font-size: 2rem;
   color: var(--TextColor-);
 }
 
-#app{
+#app {
   max-width: 100rem;
   margin: 0 auto;
   padding: 2rem;
 }
 
-.sr-only{
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -43,31 +43,33 @@ body *{
   overflow: hidden;
 }
 
-header{
+header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 2.5rem 0;
+  flex-wrap: wrap;
 }
 
-.search{
+.search {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-#input-search{
+#input-search {
   height: 4.8rem;
   width: 45rem;
   background-color: var(--trcolorOne);
   border-radius: 5px;
   border: none;
   padding: 0 .8rem;
+  flex-grow: 1;
 }
 
-.search button{
+.search button {
   display: flex;
   align-items: center;
-
   border: none;
   border-radius: 5px;
   background-color: var(--btnColor);
@@ -78,16 +80,16 @@ header{
   cursor: pointer;
 }
 
-.search button:hover{
+.search button:hover {
   background-color: var(--TextColor-);
   color: var(--btnColor);
 }
 
-.search button img{
+.search button img {
   margin: 0 1rem 0 1rem;
 }
 
-table{
+table {
   width: 100%;
   border-collapse: collapse;
 }
@@ -97,35 +99,34 @@ table * {
   color: var(--TextColor-);
 }
 
-table tr{
+table tr {
   height: 6.4rem;
 }
 
-table th{
+table th {
   background: var(--thcolor);
   text-align: left;
   font-weight: normal;
   padding: 1.5rem;
 }
 
-table th:first-child{
+table th:first-child {
   border-top-left-radius: 1.5rem;
 }
 
-table th:last-child{
+table th:last-child {
   border-top-right-radius: 1.5rem;
 }
 
-table tr:nth-child(odd){
+table tr:nth-child(odd) {
   background: var(--trcolorOne);
-
 }
 
-table tr:nth-child(even){
+table tr:nth-child(even) {
   background: var(--trcolorTwo-);
 }
 
-table td{
+table td {
   padding: 1.5rem;
   text-align: left;
 }
@@ -136,27 +137,73 @@ td.user {
   gap: 1rem;
 }
 
-td.user img{
+td.user img {
   width: 5rem;
   height: 5rem;
-
   object-fit: cover;
   border-radius: 50%;
 }
 
-td.user a{
+td.user a {
   text-decoration: none;
 }
 
-td.user a p{
+td.user a p {
   font-weight: bold;
 }
 
-td .remove{
+td .remove {
   background: none;
   border: none;
-
   color: red;
-
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  body * {
+    font-size: 1.6rem;
+  }
+
+  #input-search {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .search button {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #input-search {
+    width: 100%;
+  }
+
+  .search button {
+    width: 100%;
+  }
+
+  table th,
+  table td {
+    padding: 1rem;
+  }
+
+  table tr {
+    height: auto;
+  }
+
+  td.user {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  td.user img {
+    margin-bottom: 0.5rem;
+  }
 }

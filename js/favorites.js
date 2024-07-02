@@ -1,7 +1,7 @@
 import { GithubUser } from "./githubUser.js"
 
-export class Favorites{
-  constructor(root){
+export class Favorites {
+  constructor(root) {
     this.root = document.querySelector(root)
     this.load()
   }
@@ -10,22 +10,22 @@ export class Favorites{
     this.entries = JSON.parse(localStorage.getItem('@github-favorites:')) || []
   }
 
-  save(){
-   localStorage.setItem('@github-favorites:', JSON.stringify(this.entries))
- }
+  save() {
+    localStorage.setItem('@github-favorites:', JSON.stringify(this.entries))
+  }
 
-   
-   async add(username){
-    try{
-    const userExist = this.entries.find(entry => entry.login === username)  
 
-    if(userExist) {
-      throw new Error('Usuario ja cadastrado')
-    }
+  async add(username) {
+    try {
+      const userExist = this.entries.find(entry => entry.login === username)
 
-    const user = await GithubUser.search(username)
-      
-      if(user.login === undefined){
+      if (userExist) {
+        throw new Error('Usuario ja cadastrado')
+      }
+
+      const user = await GithubUser.search(username)
+
+      if (user.login === undefined) {
         throw new Error('Usuário não encontrado!')
       }
 
@@ -34,62 +34,68 @@ export class Favorites{
       this.save()
 
 
-    }catch(error){
-    alert(error.message)
+    } catch (error) {
+      alert(error.message)
+    }
   }
-  }
-  
-  delete(user){
+
+  delete(user) {
     const filteredEntries = this.entries
-    .filter(entry => entry.login !== user.login)
-   
-    this.entries = filteredEntries 
+      .filter(entry => entry.login !== user.login)
+
+    this.entries = filteredEntries
     this.update()
     this.save()
   }
 }
 
-export class FavoritesView extends Favorites{
-  constructor(root){
+export class FavoritesView extends Favorites {
+  constructor(root) {
     super(root)
 
     this.tbody = this.root.querySelector('table tbody')
-  
+
     this.update()
     this.onadd()
   }
 
-  onadd(){
+  onadd() {
     const addButton = this.root.querySelector('.search button')
     addButton.onclick = () => {
       const { value } = this.root.querySelector('.search input')
-      
+
       this.add(value)
     }
   }
 
-  update(){
+  update() {
     this.removeAlltr()
-    
-    
-    if(this.entries.length === 0) {
-      const emptyRow = this.createRowEmpty()
 
-      emptyRow.style.height = '60rem'
-      emptyRow.style.position = 'relative'
-      emptyRow.querySelector('img').style.position = 'absolute'
-      emptyRow.querySelector('img').style.top = '21.0rem'
-      emptyRow.querySelector('img').style.left = '22rem'
-      emptyRow.querySelector('img').style.width = '13.2rem'
-      emptyRow.querySelector('p').style.position = 'absolute'
-      emptyRow.querySelector('p').style.top = '26.2rem'
-      emptyRow.querySelector('p').style.left = '43rem'
-      emptyRow.querySelector('p').style.fontSize = '4.0rem'
-      emptyRow.querySelector('p').style.lineHeight = '2.5rem'
-      emptyRow.querySelector('p').style.color = '#4E5455'
 
-      this.tbody.append(emptyRow)
-  }
+    if (this.entries.length === 0) {
+      const emptyRow = this.createRowEmpty();
+
+      const windowWidth = window.innerWidth;
+      const imgLeft = windowWidth <= 480 ? '50%' : '22rem';
+      const pTop = windowWidth <= 480 ? '10%' : '26.2rem';
+      const pLeft = windowWidth <= 480 ? '10%' : '43rem';
+
+      emptyRow.style.height = '60rem';
+      emptyRow.style.position = 'relative';
+      emptyRow.querySelector('img').style.position = 'absolute';
+      emptyRow.querySelector('img').style.top = '21.0rem';
+      emptyRow.querySelector('img').style.left = imgLeft;
+      emptyRow.querySelector('img').style.width = '13.2rem';
+      emptyRow.querySelector('p').style.position = 'absolute';
+      emptyRow.querySelector('p').style.top = pTop;
+      emptyRow.querySelector('p').style.left = pLeft;
+      emptyRow.querySelector('p').style.fontSize = '4.0rem';
+      emptyRow.querySelector('p').style.lineHeight = '2.5rem';
+      emptyRow.querySelector('p').style.color = '#4E5455';
+
+      this.tbody.append(emptyRow);
+    }
+
 
 
     this.entries.forEach(user => {
@@ -102,22 +108,22 @@ export class FavoritesView extends Favorites{
       row.querySelector('.user span').textContent = user.login
       row.querySelector('.repositories').textContent = user.public_repos
       row.querySelector('.followers').textContent = user.followers
-    
-      row.querySelector('.remove').onclick= ()=> {
-        const isOk =confirm('Tem certeza que deseja deletar essa linha?')
-        if(isOk){
+
+      row.querySelector('.remove').onclick = () => {
+        const isOk = confirm('Tem certeza que deseja deletar essa linha?')
+        if (isOk) {
           this.delete(user)
         }
       }
-      
+
       this.tbody.append(row)
     })
-    
+
   }
 
-  createRow(){
+  createRow() {
     const tr = document.createElement('tr')
-    
+
     tr.innerHTML = `
     <td class="user">
     <img src="https://github.com/Gustavo-minatto.png" alt="Imagem de Gustavo">
@@ -137,14 +143,14 @@ export class FavoritesView extends Favorites{
   </td>
   `
 
-  return tr
+    return tr
   }
 
-  removeAlltr(){
+  removeAlltr() {
     this.tbody.querySelectorAll('tr')
-    .forEach((tr) =>{
-      tr.remove()
-    })
+      .forEach((tr) => {
+        tr.remove()
+      })
   }
 
   createRowEmpty() {
@@ -160,5 +166,5 @@ export class FavoritesView extends Favorites{
         <td></td>`
 
     return tr
-}
+  }
 }
